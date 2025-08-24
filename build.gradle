@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id "org.sonarqube" version "5.0.0.4638"
+}
+
+group = 'com.maestria'
+version = '0.0.1-SNAPSHOT'
+java {
+    sourceCompatibility = '17'
+}
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.xerial:sqlite-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.hibernate.orm:hibernate-community-dialects'
+
+}
+
+dependencyManagement {
+    imports {
+       mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.2"
+    }
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+sonar {
+	properties {
+		property("sonar.projectKey", "UserAuthService")
+		property("sonar.organization", "unir")
+		property("sonar.scm.disabled", true)
+		property("sonar.java.binaries", "build/classes/java/main")
+		property("sonar.host.url", "http://localhost:9000")
+		property("sonar.token", "squ_da82b98f02de5f3b409441f0a93cd670a4c26b92")
+	}
+}
