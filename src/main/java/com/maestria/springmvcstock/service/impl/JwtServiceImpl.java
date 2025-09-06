@@ -1,8 +1,10 @@
 package com.maestria.springmvcstock.service.impl;
+
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class JwtServiceImpl implements JwtService {
     private long ttlSeconds = 864_000;
 
     private Key key;
+    @Value("${jwt.expirationSeconds:1800}") private long expirationSeconds;
 
     @PostConstruct
     void init() {
@@ -57,7 +60,16 @@ public class JwtServiceImpl implements JwtService {
         return parseClaims(token).getExpiration().before(new Date());
     }
 
-    // setters para @ConfigurationProperties
-    public void setSecret(String secret) { this.secret = secret; }
-    public void setTtlSeconds(long ttlSeconds) { this.ttlSeconds = ttlSeconds; }
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public void setTtlSeconds(long ttlSeconds) {
+        this.ttlSeconds = ttlSeconds;
+    }
+
+    @Override
+    public long getExpirationSeconds() {
+        return expirationSeconds;
+    }
 }

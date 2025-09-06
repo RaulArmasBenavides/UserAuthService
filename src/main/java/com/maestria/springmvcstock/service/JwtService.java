@@ -6,4 +6,5 @@ public interface JwtService {
     String generateToken(String username);
     Claims parseClaims(String token);
     boolean isExpired(String token);
+    long getExpirationSeconds();
 }

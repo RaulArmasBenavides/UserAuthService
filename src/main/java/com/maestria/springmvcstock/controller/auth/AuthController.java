@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
-public class LoginController {
+@RequestMapping("/api/v2")
+public class AuthController {
     @Autowired
     private UserService userService;
     private final AuthCookieProperties cookieProps;
