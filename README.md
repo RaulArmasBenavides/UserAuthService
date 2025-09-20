@@ -14,3 +14,12 @@ Use the following commands :
 
 docker build -t userauthservice .
 docker run -d -p 8002:8002 --name userauthservice userauthservice
+
+
+
+POST http://localhost:8004/api/v1/login
+{
+  "username" : "test",
+  "password":"123456"
+
+}

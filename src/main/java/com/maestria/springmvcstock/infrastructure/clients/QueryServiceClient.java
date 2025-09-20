@@ -15,7 +15,6 @@ public class QueryServiceClient {
 
     @Autowired
     private RestTemplate restTemplate;
-    private final String SERVICE_URL = "http://StockQueryService/api/v1";
     // private final String API_GATEWAY_BASE_URL = "http://localhost:8080/api/v1"; //http://localhost:8080/api/v1
 
     // public Customer getCustomerById(Long customerId) {
