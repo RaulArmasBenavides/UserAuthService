@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = Jwts.builder()
                 .setSubject(((org.springframework.security.core.userdetails.User) authResult.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 864_000_000)) // 10 días
-                .signWith(SignatureAlgorithm.HS512, "SecretKeyToGenJWTs".getBytes()) // Clave secreta
+                .signWith(SignatureAlgorithm.HS256, "SecretKeyToGenJWTs".getBytes()) // Clave secreta
                 .compact();
 
         // Añadir el token a la respuesta
