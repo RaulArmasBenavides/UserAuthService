@@ -1,28 +1,15 @@
-# Etapa de build: Gradle + JDK 17 (Temurin)
-FROM gradle:7.6.4-jdk17-alpine AS build
-
-# Configurar el directorio de trabajo dentro del contenedor
+# Build con el wrapper del proyecto (misma versión de Gradle que en local)
+FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
-
-# Copiar los archivos de proyecto (build.gradle, settings.gradle, y código fuente)
-COPY build.gradle .
-COPY settings.gradle .
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
 COPY src ./src
+RUN sed -i 's/\r$//' gradlew && chmod +x gradlew && ./gradlew --no-daemon bootJar -x test
 
-# Ejecutar el comando Gradle para compilar y empaquetar la aplicación
-RUN gradle clean build -x test
-
-# Etapa de runtime: JDK 17 (Temurin)
-FROM eclipse-temurin:17-jdk-alpine
-
-# Configurar el directorio de trabajo dentro del contenedor
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-# Copiar el JAR construido desde la fase de compilación anterior
 COPY --from=build /app/build/libs/*.jar app.jar
-
-# Exponer el puerto en el que se ejecutará la aplicación
-EXPOSE 8002
-
-# Definir el punto de entrada para ejecutar la aplicación
+# SQLite: el compose monta un volumen en /app/data
+RUN mkdir -p /app/data
+EXPOSE 8004
 ENTRYPOINT ["java", "-jar", "app.jar"]
